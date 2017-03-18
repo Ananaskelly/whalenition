@@ -11,6 +11,7 @@ import recognition.MLP;
 public class Application {
 
 	public static void main(String[] args) {
+		nu.pattern.OpenCV.loadShared();
 		System.loadLibrary(org.opencv.core.Core.NATIVE_LIBRARY_NAME);
 		MLP.init(3, new int[]{28*28,80,10});
 		MLP.setTANH();
@@ -20,7 +21,6 @@ public class Application {
 	@Bean
 	CommandLineRunner init(FilesStorage storage) {
 		return (args) -> {
-			storage.deleteAll();
 			storage.init();
 		};
 	}
