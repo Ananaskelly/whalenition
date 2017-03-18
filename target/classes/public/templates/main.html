@@ -1,0 +1,49 @@
+<div class="main_wrap" ng-controller="mainCtrl">
+    <!-- banner -->
+    <div class="main_banner_wrap">
+        <div class="main_banner">
+            <div class="main_banner_text">
+                Digit recognition app
+            </div>
+        </div>
+    </div>
+
+    <!-- main -->
+    <div class="main_canvas_wrap" painter>
+        <div class="main_canvas_banner">
+            Draw one digit and click!
+        </div>
+        <div class="main_canvas" id="canvas_wrap">
+            <canvas class="main_canvas_canvas" id="canvas"></canvas>
+        </div>
+        <div class="main_board">
+            CNN prediction: <b style="color: darkred">work in progress!</b> <br>
+            MLP prediction: {{answer.mlp}}
+        </div>
+        <div class="main_canvas_buttons">
+            <div class="main_canvas_button_wrap">
+                <div class="main_canvas_button button_1_color" ng-click="recognize()">
+                    Recognize
+                </div>
+            </div>
+            <div class="main_canvas_button_wrap">
+                <div class="main_canvas_button main_canvas_button_2 button_2_color" ng-click="clear()">
+                    Clear
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <div class="main_footer_wrap">
+        <div class="main_footer">
+            <div class="main_footer_text">
+                * App for comparing results of implementation of multilayer perceptron and convolution network trained on MNIST. Check it out and next station "The Restaurant at the End of the Universe"!
+            </div>
+        </div>
+    </div>
+
+    <div class="copyright">
+        by ananaskelly &infin;
+    </div>
+</div>
