@@ -31,6 +31,7 @@ public class ImageProcess {
         Core.bitwise_not(buffer,buffer);
         Imgproc.dilate(buffer, buffer,
                 Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(7,7)));
+        Imgproc.GaussianBlur(buffer, buffer, new Size(13,13), 11);
         Imgproc.threshold( buffer, buffer, 150, 255, Imgproc.THRESH_BINARY);
 
         Mat labels = new Mat();
@@ -66,20 +67,20 @@ public class ImageProcess {
         // I HOPE !!
         Mat croppedDigit = new Mat(buffer, rect);
 
-        int newH = heightR;
+        /*int newH = heightR;
         if (newH > 20*0.7){
-            newH = 20;
+            newH = 22;
         }
         int newW = (int)Math.round((((double)newH)/heightR)*widthR);
-        if (newW >= 32) {
-            newW = 26;
+        if (newW > 28) {
+            newW = 22;
             newH = Math.max((int)Math.round((((double)newW)/widthR)*heightR), 4);
         }
         if (newH <= 0){
             newH = 1;
         }
         if (newW <= 0){
-            newW = 1;
+            newW = 1;*
         }
         croppedDigit = resize(croppedDigit, newW , newH);
         Imgproc.GaussianBlur(croppedDigit, croppedDigit, new Size(3,3), 1);
@@ -89,7 +90,16 @@ public class ImageProcess {
         int biasY = (int)Math.floor((28*0.5 - newH*0.5));
         Rect place = new Rect(biasX, biasY, newW, newH);
         Mat submat = blank.submat(place);
+        croppedDigit.copyTo(submat);*/
+        Mat blank = new Mat(height, width, CvType.CV_8UC1, new Scalar(0,0,0));
+        int biasX = (int)Math.round(width*0.5 - widthR*0.5);
+        int biasY = (int)Math.round((height*0.5 - heightR*0.5)*0.9);
+        Rect place = new Rect(biasX, biasY, widthR, heightR);
+        Mat submat = blank.submat(place);
         croppedDigit.copyTo(submat);
+        blank = resize(blank, 28,28);
+        Imgproc.dilate(blank, blank,
+                Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(3,3)));
         return blank;
     }
 

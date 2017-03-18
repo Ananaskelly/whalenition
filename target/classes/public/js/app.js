@@ -9,7 +9,7 @@ app.config(function ($stateProvider, $locationProvider){
         state('main', {
             url: '/whalenition',
             views: {
-                "view_1": {templateUrl: "/templates/main.html"}
+                "view_1": {templateUrl: "./templates/main.html"}
             },
             controller: 'mainCtrl'
         })

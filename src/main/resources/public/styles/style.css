@@ -42,8 +42,8 @@ html, body{
     font-size: 150%;
 }
 .main_canvas {
-    height: 60%;
-    width: 30%;
+    height: 50%;
+    width: 20%;
     border: 1px solid black;
     display: block;
     margin: 0 auto;
