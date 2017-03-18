@@ -98,8 +98,6 @@ public class ImageProcess {
         Mat submat = blank.submat(place);
         croppedDigit.copyTo(submat);
         blank = resize(blank, 28,28);
-        Imgproc.dilate(blank, blank,
-                Imgproc.getStructuringElement(Imgproc.MORPH_ELLIPSE, new Size(3,3)));
         return blank;
     }
 
