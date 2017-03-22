@@ -18,10 +18,10 @@ public class FileUploadController {
     }
 
     @PostMapping(value = "/recognize", produces = "application/json")
-    public @ResponseBody String handleFileUpload(@RequestParam("file") MultipartFile file) {
+    public @ResponseBody RecognizerAnswer handleFileUpload(@RequestParam("file") MultipartFile file) {
         storageService.store(file);
         RecognizerAnswer answ = Recognizer.run(storageService);
         storageService.deleteAll();
-        return "" + answ.mlpResult;
+        return answ;
     }
 }

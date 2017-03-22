@@ -28,6 +28,7 @@ angular.module('app.directives', ['app.services'])
 
                 scope.clear = function(){
                    canvas.clear();
+                   scope.answer.mlp = "";
                    canvas.backgroundColor = 'white';
                 };
 
@@ -35,6 +36,7 @@ angular.module('app.directives', ['app.services'])
                     var file = canvas.toDataURL();
                     var blob = dataURItoBlob(file);
                     content.send(blob).then(function(response){
+                        console.log(response);
                         scope.answer.mlp = response.data;
                     });
                 };
