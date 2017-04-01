@@ -30,7 +30,7 @@ public class ImageProcess {
         }
         Core.bitwise_not(buffer,buffer);
         Imgproc.dilate(buffer, buffer,
-                Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(7,7)));
+                Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(9,9)));
         Imgproc.GaussianBlur(buffer, buffer, new Size(13,13), 11);
         Imgproc.threshold( buffer, buffer, 150, 255, Imgproc.THRESH_BINARY);
 
