@@ -29,22 +29,10 @@ public class Recognizer {
         }
         answer.mlpResult = maxInd;
 
-        /*CNN cnn = new CNN();
-        cnn.setPath("/convMaps4/");
-        cnn.createModel(System.getProperty("user.dir") + "/cnn_model_mnist.txt");
+        TensorflowModel tfModel = TensorflowModel.getInstance();
 
-        cnn.setInitialFeature(double2Float(image.imageVector));
-        cnn.feedforward();
-
-        int maxIndCC = 0;
-        double maxElCC = 0.0;
-        for (int k = 0; k < cnn.features.lastElement().size(); k++) {
-            if(cnn.features.lastElement().get(k)[0][0] > maxElCC) {
-                maxElCC = cnn.features.lastElement().get(k)[0][0];
-                maxIndCC = k;
-            }
-        }
-        answer.cnnResult = maxIndCC;*/
+        float[] smo = tfModel.getPredictionVector(Helper.double2FloatRow(image.imageVector));
+        answer.cnnResult = Helper.getMaxInd(smo);
 
         return answer;
     }

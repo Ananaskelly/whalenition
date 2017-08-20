@@ -29,6 +29,7 @@ angular.module('app.directives', ['app.services'])
                 scope.clear = function(){
                    canvas.clear();
                    scope.answer.mlp = "";
+                   scope.answer.cnn = "";
                    canvas.backgroundColor = 'white';
                 };
 
@@ -37,6 +38,7 @@ angular.module('app.directives', ['app.services'])
                     var blob = dataURItoBlob(file);
                     content.send(blob).then(function(response){
                         scope.answer.mlp = response.data.mlpResult;
+                        scope.answer.cnn = response.data.cnnResult;
                     });
                 };
 

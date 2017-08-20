@@ -9,7 +9,7 @@ angular.module('app.directives', ['app.services'])
                 var canvas = new fabric.Canvas('canvas');
                 canvas.isDrawingMode = true;
                 canvas.backgroundColor = 'white';
-                canvas.freeDrawingBrush.width = 10;
+                canvas.freeDrawingBrush.width = 12;
                 angular.element(document).ready( function(){
                     var height = $('#canvas_wrap')[0].offsetHeight * 0.98;
                     var width = $('#canvas_wrap')[0].offsetWidth * 0.98;
@@ -29,6 +29,7 @@ angular.module('app.directives', ['app.services'])
                 scope.clear = function(){
                    canvas.clear();
                    scope.answer.mlp = "";
+                   scope.answer.cnn = "";
                    canvas.backgroundColor = 'white';
                 };
 
@@ -36,8 +37,8 @@ angular.module('app.directives', ['app.services'])
                     var file = canvas.toDataURL();
                     var blob = dataURItoBlob(file);
                     content.send(blob).then(function(response){
-                        console.log(response);
-                        scope.answer.mlp = response.data;
+                        scope.answer.mlp = response.data.mlpResult;
+                        scope.answer.cnn = response.data.cnnResult;
                     });
                 };
 

@@ -4,7 +4,7 @@ import CNNEntities.Winner;
 
 public class Helper {
 
-    static public float[][] getSubmatrix(float[][] input, int y, int x, int height, int width){
+    public static float[][] getSubmatrix(float[][] input, int y, int x, int height, int width){
         float[][] result = new float[height][width];
         int c = 0;
         for (int i = y; i < (y + height); i ++){
@@ -19,7 +19,7 @@ public class Helper {
         return result;
     }
 
-    static public float[][] matrixSum(float[][] m1, float[][] m2){
+    public static float[][] matrixSum(float[][] m1, float[][] m2){
         float[][] res = new float[m1.length][m1[0].length];
         for (int i = 0; i < m1.length; i++){
             for (int j = 0; j < m1[0].length; j++){
@@ -29,7 +29,7 @@ public class Helper {
         return res;
     }
 
-    static public float convolution(float[][] m1, float[][] m2){
+    public static float convolution(float[][] m1, float[][] m2){
         float answer = 0;
         for (int i = 0; i < m1.length; i++){
             for (int j = 0; j < m1[0].length; j++){
@@ -39,7 +39,7 @@ public class Helper {
         return answer;
     }
 
-    static public Winner getMax(float[][] input){
+    public static Winner getMax(float[][] input){
         Winner winner = new Winner();
         float max = -Float.MAX_VALUE;
         int indexI = 0;
@@ -59,7 +59,7 @@ public class Helper {
         return winner;
     }
 
-    static public float[][] double2Float(double[] in){
+    public static float[][] double2Float(double[] in){
         float m[][] = new float[28][28];
         int c = 0;
         for (int i = 0; i < 28; i++ ){
@@ -71,5 +71,26 @@ public class Helper {
         return m;
     }
 
+    public static float[] double2FloatRow(double[] in){
+        float m[] = new float[in.length];
+
+        for (int i = 0; i < in.length; i++ ){
+            m[i] = (float)in[i];
+        }
+        return m;
+    }
+
+    public static int getMaxInd(float[] arr){
+       int maxInd = 0;
+       float maxVal = - Float.MAX_VALUE;
+       for (int i = 0; i < arr.length; i++){
+           if (maxVal < arr[i]){
+               maxVal = arr[i];
+               maxInd = i;
+           }
+       }
+
+       return maxInd;
+    }
 
 }
