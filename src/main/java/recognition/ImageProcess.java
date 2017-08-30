@@ -4,16 +4,12 @@ import org.opencv.core.*;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
-
 public class ImageProcess {
 
+    private static final String crROI = "crop_roi";
+    private static final String crAll = "crop_all";
+
+    private static String resizeMode = crROI;
     /**
      *
      * @param image input image
@@ -29,10 +25,6 @@ public class ImageProcess {
             Imgproc.cvtColor(image, buffer, Imgproc.COLOR_RGB2GRAY);
         }
         Core.bitwise_not(buffer,buffer);
-        Imgproc.dilate(buffer, buffer,
-                Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(9,9)));
-        Imgproc.GaussianBlur(buffer, buffer, new Size(13,13), 11);
-        Imgproc.threshold( buffer, buffer, 150, 255, Imgproc.THRESH_BINARY);
 
         Mat labels = new Mat();
         Mat stat = new Mat();
@@ -41,7 +33,10 @@ public class ImageProcess {
         Imgproc.connectedComponentsWithStats(buffer, labels, stat, centroids);
 
         int maxHeight = 0;
-        int tx = -1; int ty = -1; int bx = 0; int by = 0;
+        int tx = -1; int ty = -1;
+
+        //int bx = 0; int by = 0;
+
         int heightR = 0; int widthR = 0;
 
         for( int i = 1; i < stat.rows(); i++ )
@@ -51,8 +46,10 @@ public class ImageProcess {
             if (currentStat[3] > maxHeight){
                 tx = currentStat[0];
                 ty = currentStat[1];
-                bx = currentStat[0] + currentStat[2];
-                by = currentStat[1] + currentStat[3];
+
+                //bx = currentStat[0] + currentStat[2];
+                //by = currentStat[1] + currentStat[3];
+
                 heightR = currentStat[3];
                 widthR = currentStat[2];
                 maxHeight = currentStat[3];
@@ -61,44 +58,60 @@ public class ImageProcess {
 
 
         Rect rect = new Rect(tx,ty, widthR, heightR);
+
+
         if (tx < 0 || ty < 0){
             return null;
         }
         // I HOPE !!
         Mat croppedDigit = new Mat(buffer, rect);
 
-        /*int newH = heightR;
-        if (newH > 20*0.7){
-            newH = 22;
+        Mat blank;
+        int biasX, biasY;
+        if (resizeMode.equals(crROI)){
+            int newH = heightR;
+            if (newH > 20){
+                newH = 20;
+            }
+            int newW = (int)Math.round((((double)newH)/heightR)*widthR);
+            if (newW > 28) {
+                newW = 20;
+                newH = Math.max((int)Math.round((((double)newW)/widthR)*heightR), 4);
+            }
+            if (newH <= 0){
+                newH = 1;
+            }
+            if (newW <= 0){
+                newW = 1;
+            }
+            blank = new Mat(28, 28, CvType.CV_8UC1, new Scalar(0,0,0));
+            croppedDigit = resize(croppedDigit, newW , newH);
+            biasX = (int)Math.floor(28*0.5 - newW*0.5);
+            biasY = (int)Math.floor((28*0.5 - newH*0.5));
+            Rect place = new Rect(biasX, biasY, newW, newH);
+            Mat submat = blank.submat(place);
+            croppedDigit.copyTo(submat);
+        } else {
+            blank = new Mat(height, width, CvType.CV_8UC1, new Scalar(0,0,0));
+            biasX = (int)Math.round(width*0.5 - widthR*0.5);
+            biasY = (int)Math.round((height*0.5 - heightR*0.5)*0.9);
+            Rect place = new Rect(biasX, biasY, widthR, heightR);
+            Mat submat = blank.submat(place);
+            croppedDigit.copyTo(submat);
+            blank = resize(blank, 28,28);
         }
-        int newW = (int)Math.round((((double)newH)/heightR)*widthR);
-        if (newW > 28) {
-            newW = 22;
-            newH = Math.max((int)Math.round((((double)newW)/widthR)*heightR), 4);
-        }
-        if (newH <= 0){
-            newH = 1;
-        }
-        if (newW <= 0){
-            newW = 1;*
-        }
-        croppedDigit = resize(croppedDigit, newW , newH);
-        Imgproc.GaussianBlur(croppedDigit, croppedDigit, new Size(3,3), 1);
 
-        Mat blank = new Mat(28, 28, CvType.CV_8UC1, new Scalar(0,0,0));
-        int biasX = (int)Math.floor(28*0.5 - newW*0.5);
-        int biasY = (int)Math.floor((28*0.5 - newH*0.5));
-        Rect place = new Rect(biasX, biasY, newW, newH);
-        Mat submat = blank.submat(place);
-        croppedDigit.copyTo(submat);*/
-        Mat blank = new Mat(height, width, CvType.CV_8UC1, new Scalar(0,0,0));
-        int biasX = (int)Math.round(width*0.5 - widthR*0.5);
-        int biasY = (int)Math.round((height*0.5 - heightR*0.5)*0.9);
-        Rect place = new Rect(biasX, biasY, widthR, heightR);
-        Mat submat = blank.submat(place);
-        croppedDigit.copyTo(submat);
-        blank = resize(blank, 28,28);
         return blank;
+    }
+
+    private  static Mat filtering(Mat input){
+        Mat buffer = input.clone();
+        Imgproc.dilate(buffer, buffer,
+                Imgproc.getStructuringElement(Imgproc.MORPH_RECT, new Size(9,9)));
+        Imgproc.GaussianBlur(buffer, buffer, new Size(13,13), 11);
+        Imgproc.threshold( buffer, buffer, 150, 255, Imgproc.THRESH_BINARY);
+
+        return buffer;
     }
 
     private static Mat resize(Mat originalSize, int w, int h){

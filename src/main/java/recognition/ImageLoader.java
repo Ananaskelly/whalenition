@@ -23,7 +23,7 @@ public class ImageLoader {
         Mat original = Imgcodecs.imread(file.getAbsolutePath(), Imgcodecs.CV_LOAD_IMAGE_COLOR);
         Mat prepared = ImageProcess.prepare(original);
 
-        System.out.print(prepared.dump());
+        //System.out.print(prepared.dump());
         image.imageMat = prepared;
         image.imageVector = ImageProcess.Mat2DoubleVector(prepared);
 
