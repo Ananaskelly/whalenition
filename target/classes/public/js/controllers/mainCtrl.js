@@ -5,6 +5,7 @@ angular.module('app.controllers', ['app.services'])
     .controller('mainCtrl', function($scope){
         $scope.answer = {
             mlp: "",
-            cnn: ""
+            cnn: "",
+            cnn_exp: ""
         }
     });

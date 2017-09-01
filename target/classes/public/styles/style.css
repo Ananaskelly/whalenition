@@ -18,7 +18,7 @@ html, body{
 }
 .main_banner_wrap, .main_footer_wrap {
     display: table;
-    height: 20%;
+    height: 15%;
     width: 100%;
 }
 .main_banner, .main_footer {
