@@ -9,7 +9,7 @@ angular.module('app.directives', ['app.services'])
                 var canvas = new fabric.Canvas('canvas');
                 canvas.isDrawingMode = true;
                 canvas.backgroundColor = 'white';
-                canvas.freeDrawingBrush.width = 12;
+                canvas.freeDrawingBrush.width = 14;
                 angular.element(document).ready( function(){
                     var height = $('#canvas_wrap')[0].offsetHeight * 0.98;
                     var width = $('#canvas_wrap')[0].offsetWidth * 0.98;
