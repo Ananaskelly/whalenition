@@ -29,15 +29,22 @@ public class Recognizer {
         }
         answer.mlpResult = maxInd;
 
+        float[] preparedImage = Helper.double2FloatRow(image.imageVector);
+
         TensorflowModel tfModel = new TensorflowModel("/tmp/model");
 
-        float[] smo = tfModel.getPredictionVector(Helper.double2FloatRow(image.imageVector), false);
+        float[] smo = tfModel.getPredictionVector(preparedImage, false);
         answer.cnnResult = Helper.getMaxInd(smo);
 
         TensorflowModel tfModel2 = new TensorflowModel("/tmp/model2");
 
-        float[] smo2 = tfModel2.getPredictionVector(Helper.double2FloatRow(image.imageVector), true);
+        float[] smo2 = tfModel2.getPredictionVector(preparedImage, true);
         answer.cnnExpResult = Helper.getMaxInd(smo2);
+
+        TensorflowModel tfModel3 = new TensorflowModel("/tmp/model3_stn");
+
+        float[] smo3 = tfModel3.getPredictionVector(preparedImage, true);
+        answer.cnnSTNResult = Helper.getMaxInd(smo3);
 
         return answer;
     }

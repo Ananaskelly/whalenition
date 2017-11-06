@@ -6,6 +6,7 @@ angular.module('app.controllers', ['app.services'])
         $scope.answer = {
             mlp: "",
             cnn: "",
-            cnn_exp: ""
+            cnn_exp: "",
+            cnn_stn: ""
         }
     });

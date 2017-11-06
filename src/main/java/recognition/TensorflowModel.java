@@ -34,8 +34,8 @@ public class TensorflowModel {
     public float[] getPredictionVector(float[] input, boolean hasPhase){
         Session session = modelBundle.session();
 
-        long[] shape = new long[] {28, 28};
-        long[] shape1 = new long[] {10};
+        long[] shape = new long[] {1, 28*28};
+        long[] shape1 = new long[] {1, 10};
 
         FloatBuffer buffer = FloatBuffer.wrap(input);
         Tensor inputTensor = Tensor.create(shape, buffer);
@@ -44,7 +44,6 @@ public class TensorflowModel {
         Tensor outputTensor = Tensor.create(shape1, buffer1);
 
         FloatBuffer newBuffer = FloatBuffer.allocate(10);
-
         Tensor out;
         if (hasPhase) {
 
